@@ -232,7 +232,7 @@ class Contacts
   end
 
   def find_by_email(email)
-    get "#{@endpoint}?email=#{email}"
+    get "#{@endpoint}?email=#{CGI.escape(email)}"
   end
 
 
@@ -255,11 +255,9 @@ class Contacts
   # :param email: contact email to be deleted.
   # :param list_id: list id to remove contact from, if not provided, contact will be deleted from system.
   def delete(email, list_id = nil)
-    if list_id
-      query = "email=#{email}&list_id=#{list_id}"
-    else
-      query = "email=#{email}"
-    end
+    query  = "email=#{CGI.escape(email)}"
+    query += "&list_id=#{list_id}" if list_id
+
     del "#{@endpoint}?#{query}", nil
   end
 
