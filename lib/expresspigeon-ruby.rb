@@ -85,6 +85,10 @@ module ExpressPigeon
     def self.messages
       Messages.new
     end
+
+    def self.auto_responders
+      AutoResponders.new
+    end
   end
 
 end
@@ -110,6 +114,9 @@ class MetaHash < Hash
     @delegate.to_s
   end
 
+  def inspect
+    @delegate.inspect
+  end
 end
 
 class Lists
@@ -314,3 +321,5 @@ class Messages
 
   end
 end
+
+require_relative 'express_pigeon/auto_responders'
