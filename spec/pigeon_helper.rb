@@ -1,8 +1,6 @@
 
-TEMPLATE_ID ||= 1
-LIST_ID ||= 12
-API_USER ||= "non@non.non"
-DISABLED_LIST ||= 12
+ExpressPigeon::AUTH_KEY = ENV['EXPRESSPIGEON_AUTH_KEY'] # or you can set it directly in code
+PIGEON = ExpressPigeon::API
 
 module PigeonSpecHelper
   def validate_response res, code, status, message
@@ -11,6 +9,6 @@ module PigeonSpecHelper
     if message
       (res.message =~ message).should_not be_nil
     end
-
   end
 end
+
