@@ -27,43 +27,20 @@ describe 'lists integration test' do
   end
 
 
-  it 'should upload contacts' do
-
-
-  list_name = "Upload_#{Kernel.rand(9999).to_s}"
-  list_resp = PIGEON.lists.create(list_name, 'Bob', 'bob@acmetools.com')
-
-  resp = PIGEON.lists.upload(list_resp.list.id, 'spec/resources/upload.csv')
-
-  puts resp
-  validate_response resp, 200, 'success', /file uploaded successfully/
-
-  res  = PIGEON.lists.delete(list_resp.list.id)
-  validate_response res, 200, 'success', /list=#{list_resp.list.id} deleted successfully/
-
-  #res = PIGEON.lists.upload(existing_list.list.id, self.file_to_upload)
-
-
-  #self.assertEqual(res.status, "success")
-  #self.assertEqual(res.code, 200)
-  #self.assertEquals(res.message, "file uploaded successfully")
-  #self.assertTrue(res.upload_id is not None)
-  #
-  #sleep(5)
-  #
-  #res = self.api.lists.upload_status(res.upload_id)
-  #self.assertEqual(res.message, "file upload completed")
-  #self.assertEqual(res.status, "success")
-  #self.assertEqual(res.code, 200)
-  #report = res.report
-  #self.assertTrue(report.completed)
-  #self.assertFalse(report.failed)
-  #self.assertEqual(report.suppressed, 0)
-  #self.assertEqual(report.skipped, 0)
-  #self.assertEqual(report.list_name, list_name)
-  #self.assertEqual(report.imported, 2)
-
-end
+  it 'should upload contacts as CSV file' do
+    list_name = "Upload_#{Kernel.rand(9999).to_s}"
+    list_resp = PIGEON.lists.create(list_name, 'Bob', 'bob@acmetools.com')
+    begin
+      resp = PIGEON.lists.upload(list_resp.list.id, 'spec/resources/upload.csv')
+      validate_response resp, 200, 'success', /file uploaded successfully/
+      res = PIGEON.contacts.find_by_email 'x@x.x'
+      res.lists[0]['id'].should eq list_resp.list.id
+    ensure
+      res = PIGEON.lists.delete(list_resp.list.id)
+      validate_response res, 200, 'success', /list=#{list_resp.list.id} deleted successfully/
+      PIGEON.contacts.find_by_email('x@x.x').message.should eq 'contact=x@x.x not found'
+    end
+  end
 
 # it 'complete below'
 #    def test_upsert_list_with_non_existent_id(self):

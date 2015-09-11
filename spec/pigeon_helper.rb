@@ -1,5 +1,3 @@
-
-ExpressPigeon::AUTH_KEY = ENV['EXPRESSPIGEON_AUTH_KEY'] # or you can set it directly in code
 PIGEON = ExpressPigeon::API
 
 module PigeonSpecHelper

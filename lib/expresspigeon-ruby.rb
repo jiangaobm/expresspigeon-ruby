@@ -7,7 +7,7 @@ require 'rest_client'
 
 module ExpressPigeon
 
-  AUTH_KEY = ''
+  AUTH_KEY = ENV['EXPRESSPIGEON_AUTH_KEY']
   ROOT = 'https://api.expresspigeon.com/'
   USE_SSL = true
 
@@ -58,7 +58,7 @@ module ExpressPigeon
 
     def get_auth_key
       unless AUTH_KEY ||  @auth_key
-        raise("Must set either EXPRESSPIGEON_AUTH_KEY as environment variable, or ExpressPigeon::AUTH_KEY in code")
+        raise("Must set authentication key either using environment variable EXPRESSPIGEON_AUTH_KEY, or using auth_key() method in code")
       end
 
       @auth_key ? @auth_key : AUTH_KEY
