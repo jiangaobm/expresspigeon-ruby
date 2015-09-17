@@ -95,6 +95,10 @@ module ExpressPigeon
     def self.auto_responders
       AutoResponders.new
     end
+
+    def self.templates
+      Templates.new
+    end
   end
 
 end
@@ -104,5 +108,6 @@ require_relative 'expresspigeon-ruby/lists'
 require_relative 'expresspigeon-ruby/campaigns'
 require_relative 'expresspigeon-ruby/contacts'
 require_relative 'expresspigeon-ruby/messages'
+require_relative 'expresspigeon-ruby/templates'
 
 require_relative 'express_pigeon/auto_responders'
