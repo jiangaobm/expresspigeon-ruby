@@ -26,13 +26,22 @@ module ExpressPigeon
 
     def http(path, method, params = {})
       root = @root ? @root : ROOT
+
+      if params and !params.empty? and method == 'Get'
+        query = URI.encode_www_form(params)
+        path = "#{path}?#{query}"
+      end
+
+
       uri = URI.parse "#{root}#{path}"
       req = Net::HTTP.const_get("#{method}").new "#{ROOT}#{path}"
 
       req['X-auth-key'] = get_auth_key
       if params
-        req.body = params.to_json
-        req['Content-type'] = 'application/json'
+        if method != 'Get'
+          req.body = params.to_json
+          req['Content-type'] = 'application/json'
+        end
       end
 
       if block_given?
@@ -64,8 +73,8 @@ module ExpressPigeon
       @auth_key ? @auth_key : AUTH_KEY
     end
 
-    def get(path, &block)
-      http path, 'Get', nil, &block
+    def get(path, params = {}, &block)
+      http path, 'Get', params, &block
     end
 
     def post(path, params = {})

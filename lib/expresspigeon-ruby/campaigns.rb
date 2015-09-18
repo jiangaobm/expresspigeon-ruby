@@ -6,8 +6,8 @@ module ExpressPigeon
       @endpoint = 'campaigns'
     end
 
-    def all
-      get @endpoint
+    def all (params ={})
+      get @endpoint, params
     end
 
     def report(campaign_id)

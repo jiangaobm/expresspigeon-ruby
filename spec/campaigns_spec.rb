@@ -4,6 +4,7 @@ require 'pigeon_helper'
 describe 'campaigns integration test' do
 
   include PigeonSpecHelper
+
   it 'should return more than 0 campaign ids' do
     res = PIGEON.campaigns.all
     res.class.should == Array
@@ -31,7 +32,6 @@ describe 'campaigns integration test' do
   end
 
   it 'cannot send to non-existing list' do
-
     res = PIGEON.campaigns.send(:list_id => -1, :template_id => TEMPLATE_ID, :name => 'My Campaign', :from_name => 'John',
                                 :reply_to => 'j@j.j',
                                 :subject => 'Hi', :google_analytics => false)
@@ -103,6 +103,15 @@ describe 'campaigns integration test' do
                                      :google_analytics => false, :schedule_for => '2010-05-28T17:19:50.779+0300'
 
     validate_response resp, 400, 'error', /schedule_for should be in the future/
+  end
+
+
+  # This test uses account ep.api.tester@expresspigeon.com and expects two specific campaign there.
+  it 'should list campaigns from account' do
+    campaigns = PIGEON.campaigns.all
+    campaigns.size.should eq 2
+    campaigns = PIGEON.campaigns.all from_id: 53853
+    campaigns.size.should eq 1
   end
 
 end
