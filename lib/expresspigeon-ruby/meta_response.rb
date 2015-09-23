@@ -1,12 +1,12 @@
 module ExpressPigeon
-  class MetaHash < Hash
+  class MetaResponse
+
     def initialize(delegate)
-      super
       @delegate = delegate
       @delegate.each_key do |k|
         v = @delegate[k] # lets go only one level down for now
         if v.kind_of? Hash
-          @delegate[k] = MetaHash.new(v)
+          @delegate[k] = MetaResponse.new(v)
         end
       end
     end

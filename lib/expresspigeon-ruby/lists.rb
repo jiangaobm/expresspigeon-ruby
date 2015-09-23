@@ -60,7 +60,7 @@ module ExpressPigeon
       end
       parsed = JSON.parse(res)
       if parsed.kind_of? Hash
-        MetaHash.new parsed
+        MetaResponse.new parsed
       else
         parsed
       end
