@@ -56,5 +56,9 @@ module ExpressPigeon
     def schedule(params = {})
       post @endpoint, params
     end
+
+    def delete(campaign_id)
+      del "#{@endpoint}/#{campaign_id}"
+    end
   end
 end

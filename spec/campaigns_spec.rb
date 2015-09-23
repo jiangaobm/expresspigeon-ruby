@@ -106,12 +106,27 @@ describe 'campaigns integration test' do
   end
 
 
+
+  it 'should delete scheduled campaign' do
+    list_resp = PIGEON.lists.create('My list', 'John', API_USER)
+    resp = PIGEON.campaigns.schedule :list_id => list_resp.list.id, :template_id => TEMPLATE_ID, :name => 'My Campaign',
+                                     :from_name => 'John',
+                                     :reply_to => API_USER, :subject => 'Hi',
+                                     :google_analytics => false, :schedule_for => '2030-05-28T17:19:50.779+0300'
+
+    validate_response resp, 200, 'success', /new campaign created successfully/
+    campaign_id = resp.campaign_id
+    resp = PIGEON.campaigns.delete campaign_id
+    resp.message.should eq "campaign #{campaign_id} was deleted"
+  end
+
+
   # This test uses account ep.api.tester@expresspigeon.com and expects two specific campaign there.
   it 'should list campaigns from account' do
     campaigns = PIGEON.campaigns.all
-    campaigns.size.should eq 2
+    campaigns.size.should eq 4
     campaigns = PIGEON.campaigns.all from_id: 53853
-    campaigns.size.should eq 1
+    campaigns.size.should eq 3
   end
 
 end
