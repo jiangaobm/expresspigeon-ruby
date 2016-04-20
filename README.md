@@ -1,6 +1,6 @@
 # Expresspigeon::Ruby
 
-TODO: Write a gem description
+This is a Ruby library for convenince access to [ExpressPigeon API](https://expresspigeon.com/api).
 
 ## Installation
 
