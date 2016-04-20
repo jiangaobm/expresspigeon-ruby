@@ -45,7 +45,6 @@ module ExpressPigeon
         query << params.join('&')
       end
 
-      puts "calling: #{query}"
       get query
 
     end
