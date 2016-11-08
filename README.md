@@ -16,7 +16,7 @@ Or install it yourself as:
 
     $ gem install expresspigeon-ruby
 
-## Usage
+## Sending a simple message
 
 Sending a transactional message is easy: 
 
@@ -40,6 +40,26 @@ sleep 5
 puts MESSAGES.report message_response.id
 ```
 
+## Sending a message with attachments
+
+```ruby
+ MESSAGES = ExpressPigeon::API.messages.auth_key(ENV['AUTH_KEY'])
+
+ attachments = %W{attachments/attachment1.txt  attachments/smile.pdf attachments/example.ics}
+
+ puts MESSAGES.send_message(
+     123,                                        # template_id
+     'john@doe.com',                             #to
+     'jane@doe.com',                             #reply_to
+     "Jane Doe",                                 #from_name
+     "Want to get out for a dinner?",            #subject
+     {first_name: 'Igor', eye_color: 'blue'},    #merge_fields
+     false,                                      #view_online
+     true,                                       #click_tracking
+     attachments                                 #file paths to upload as attachments
+ )
+
+```
 
 ## Contributing
 

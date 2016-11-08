@@ -7,3 +7,7 @@ rspec.sh
 set_env
 
 *.txt
+
+test/send.sh
+
+expresspigeon-ruby-*.gem

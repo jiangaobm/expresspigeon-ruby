@@ -8,7 +8,9 @@ require 'rest_client'
 module ExpressPigeon
 
   AUTH_KEY = ENV['EXPRESSPIGEON_AUTH_KEY']
-  ROOT = 'https://api.expresspigeon.com/'
+
+  # EXPRESSPIGEON_ROOT env var is used to point to testenv
+  ROOT =  ENV.has_key?('EXPRESSPIGEON_ROOT') ? ENV['EXPRESSPIGEON_ROOT'] : 'https://api.expresspigeon.com/'
   USE_SSL = true
 
   module API

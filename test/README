@@ -1,0 +1,5 @@
+This directory contains Ruby scripts for manual testing some features.
+
+In order to point to test envv, and set the auth_key, need to source the file called set_env 
+
+ 

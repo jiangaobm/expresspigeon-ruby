@@ -124,4 +124,30 @@ describe 'transactional messages integration test' do
   #    return report[0]
 
 
+  it 'should from payload hash' do
+
+     payload = PIGEON.messages.prepare_payload(123,           #template_id
+                                               'john@doe.com',
+                                               'jane@doe.com',
+                                               'Jane Doe',
+                                               'Hello, Dolly!',
+                                               {eye_color: 'blue', body_shape:'pear'},
+                                               false, true,
+                                               %w(spec/resources/attachment1.txt spec/resources/attachment2.txt))
+
+     payload[:multipart].should eq true
+     payload[:template_id].should eq 123
+     payload[:to].should eq 'john@doe.com'
+     payload[:reply_to].should eq 'jane@doe.com'
+     payload[:from].should eq 'Jane Doe'
+     payload[:subject].should eq 'Hello, Dolly!'
+     payload[:template_id].should eq 123
+     payload[:merge_fields][:eye_color].should eq 'blue'
+     payload[:merge_fields][:body_shape].should eq 'pear'
+     payload[:view_online].should eq false
+     payload[:click_tracking].should eq true
+     payload['attachment1.txt'].class.should eq File
+     File.basename(payload['attachment1.txt']).should eq 'attachment1.txt'
+     File.basename(payload['attachment2.txt']).should eq 'attachment2.txt'
+  end
 end

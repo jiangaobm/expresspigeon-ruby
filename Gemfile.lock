@@ -1,19 +1,19 @@
 PATH
   remote: .
   specs:
-    expresspigeon-ruby (0.0.3)
-      rest-client (~> 1.8.0)
+    expresspigeon-ruby (0.0.6)
+      rest-client (~> 1.8)
 
 GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
-    domain_name (0.5.24)
+    domain_name (0.5.20161021)
       unf (>= 0.0.5, < 1.0.0)
-    http-cookie (1.0.2)
+    http-cookie (1.0.3)
       domain_name (~> 0.5)
-    mime-types (1.25.1)
-    netrc (0.7.9)
+    mime-types (2.99.3)
+    netrc (0.11.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
@@ -28,7 +28,7 @@ GEM
     rspec-mocks (2.14.3)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.1)
+    unf_ext (0.0.7.2)
 
 PLATFORMS
   ruby
@@ -36,3 +36,6 @@ PLATFORMS
 DEPENDENCIES
   expresspigeon-ruby!
   rspec (~> 2.6)
+
+BUNDLED WITH
+   1.13.6
