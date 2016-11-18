@@ -10,9 +10,10 @@ puts MESSAGES.send_message(
     'igor@expresspigeon.com',                         #to
     'igor@polevoy.org',                         #reply_to
     "Igor Polevoy",                             #from_name
-    "Hi there! Two attachments and a calendar",                                #subject
+    "Hi there! Two attachments and a calendar - Ruby",                                #subject
     {first_name: 'Igor', eye_color: 'blue'},    #merge_fields
     false,                                      #view_online
     true,                                       #click_tracking
+    true,                                       #suppress_address
     attachments                                 #file paths to upload as attachments
 )

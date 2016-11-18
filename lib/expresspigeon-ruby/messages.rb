@@ -17,13 +17,17 @@ module ExpressPigeon
     # * +merge fields+ - hash with dynamic values to merge into a template
     # * +view_online+ - generate "view online" link in the template
     # * +click_tracking+ - enable/disable click tracking (and URL rewriting)
+    # * +suppress_address+ - enable/disable display of physical address at the bottom of newsletter.
     # * +attachments+ - array of file paths  to attach to email. Size limit: 1k per attachment, maximum 3 attachments.
-    def send_message(template_id, to, reply_to, from_name, subject, merge_fields = nil, view_online = false, click_tracking = true, attachments = nil)
+    def send_message(template_id, to, reply_to, from_name, subject, merge_fields = nil, view_online = false,
+                     click_tracking = true, suppress_address = false, attachments = nil)
       if attachments
-        upload(template_id, to, reply_to, from_name, subject, merge_fields, view_online, click_tracking, attachments)
+          upload(template_id, to, reply_to, from_name, subject, merge_fields, view_online, click_tracking,
+                                                                                    suppress_address, attachments)
         else
-          post @endpoint, params = {template_id: template_id, :to => to, reply_to: reply_to, :from => from_name, :subject => subject,
-                                    :merge_fields => merge_fields, :view_online => view_online, :click_tracking => click_tracking}
+          post @endpoint, params = {template_id: template_id, to: to, reply_to: reply_to, from: from_name,
+                                    subject: subject, merge_fields: merge_fields, view_online: view_online,
+                                    click_tracking: click_tracking, suppress_address: suppress_address}
       end
     end
 
@@ -78,15 +82,12 @@ module ExpressPigeon
     # * +merge fields+ - hash with dynamic values to merge into a template
     # * +view_online+ - generate "view online" link in the template
     # * +click_tracking+ - enable/disable click tracking (and URL rewriting)
+    # * +suppress_address+ - enable/disable display of physical address at the bottom of newsletter.
     # * +attachments+ - array of file paths  to attach to email. Size limit: 1k per attachment, maximum 3 attachments.
-    def upload(template_id, to, reply_to, from_name, subject, merge_fields, view_online, click_tracking, attachments)
-
+    def upload(template_id, to, reply_to, from_name, subject, merge_fields, view_online, click_tracking, suppress_address, attachments)
       path = "#{@root ? @root : ROOT}/#{@endpoint}"
-
-      puts "sending to #{path}"
-
       begin
-        payload = prepare_payload(template_id, to, reply_to, from_name, subject, merge_fields, view_online, click_tracking, attachments)
+        payload = prepare_payload(template_id, to, reply_to, from_name, subject, merge_fields, view_online, click_tracking, suppress_address, attachments)
         request = RestClient::Request.new(
             :method => :post,
             :headers => {:'X-auth-key' => get_auth_key},
@@ -107,7 +108,7 @@ module ExpressPigeon
     end
 
 
-    def prepare_payload(template_id, to, reply_to, from, subject, merge_fields, view_online, click_tracking, attachments)
+    def prepare_payload(template_id, to, reply_to, from, subject, merge_fields, view_online, click_tracking, suppress_address, attachments)
       payload = { multipart: true }
       payload[:template_id] = template_id
       payload[:to] = to
@@ -117,6 +118,7 @@ module ExpressPigeon
       payload[:merge_fields] = merge_fields
       payload[:view_online] = view_online
       payload[:click_tracking] = click_tracking
+      payload[:suppress_address] = suppress_address
 
       attachments.each { |attachment|
         if File.file?(attachment)

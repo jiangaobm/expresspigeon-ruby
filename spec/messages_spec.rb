@@ -132,7 +132,7 @@ describe 'transactional messages integration test' do
                                                'Jane Doe',
                                                'Hello, Dolly!',
                                                {eye_color: 'blue', body_shape:'pear'},
-                                               false, true,
+                                               false, true, false,
                                                %w(spec/resources/attachment1.txt spec/resources/attachment2.txt))
 
      payload[:multipart].should eq true
@@ -146,6 +146,7 @@ describe 'transactional messages integration test' do
      payload[:merge_fields][:body_shape].should eq 'pear'
      payload[:view_online].should eq false
      payload[:click_tracking].should eq true
+     payload[:suppress_address].should eq false
      payload['attachment1.txt'].class.should eq File
      File.basename(payload['attachment1.txt']).should eq 'attachment1.txt'
      File.basename(payload['attachment2.txt']).should eq 'attachment2.txt'

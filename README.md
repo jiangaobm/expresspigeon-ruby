@@ -56,6 +56,7 @@ puts MESSAGES.report message_response.id
      {first_name: 'Igor', eye_color: 'blue'},    #merge_fields
      false,                                      #view_online
      true,                                       #click_tracking
+     true,                                       #suppress_address
      attachments                                 #file paths to upload as attachments
  )
 
