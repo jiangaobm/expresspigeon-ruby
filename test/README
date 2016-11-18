@@ -1,5 +1,25 @@
+h2. Intro
+
 This directory contains Ruby scripts for manual testing some features.
 
-In order to point to test envv, and set the auth_key, need to source the file called set_env 
+In order to point to test env and set the auth_key, you need need to source the file called set_env (ignored)
 
- 
+h2. Curl example
+
+
+```
+curl -X POST https://api.expresspigeon.com/messages  \
+    -H "Content-type: multipart/form-data" \
+    -H "X-auth-key: XXX"\
+    -F template_id=123\
+    -F reply_to='john@doe.com'\
+    -F from='John Doe'\
+    -F to='jane@doe.com'\
+    -F subject='Lets go out tonight?'\
+    -F view_online=true\
+    -F suppress_address=true\
+    -F click_tracking=true\
+    -F merge_fields='{"first_name": "Jane"}'\
+    -F attachment=@attachments/attachment1.txt\
+    -F attachment=@attachments/attachment2.txt
+```
