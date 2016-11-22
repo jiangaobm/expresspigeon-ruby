@@ -53,7 +53,7 @@ puts MESSAGES.report message_response.id
      'jane@doe.com',                             #reply_to
      "Jane Doe",                                 #from_name
      "Want to get out for a dinner?",            #subject
-     {first_name: 'Igor', eye_color: 'blue'},    #merge_fields
+     {first_name: 'John', main_course: 'stake'}, #merge_fields
      false,                                      #view_online
      true,                                       #click_tracking
      true,                                       #suppress_address
