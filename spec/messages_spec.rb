@@ -142,12 +142,16 @@ describe 'transactional messages integration test' do
      payload[:from].should eq 'Jane Doe'
      payload[:subject].should eq 'Hello, Dolly!'
      payload[:template_id].should eq 123
-     payload[:merge_fields][:eye_color].should eq 'blue'
-     payload[:merge_fields][:body_shape].should eq 'pear'
      payload[:view_online].should eq false
      payload[:click_tracking].should eq true
      payload[:suppress_address].should eq false
      payload['attachment1.txt'].class.should eq File
+
+     payload[:merge_fields].class.should eq String
+     merge_fields = JSON.parse payload[:merge_fields]
+     merge_fields['eye_color'].should eq "blue"
+     merge_fields['body_shape'].should eq "pear"
+
      File.basename(payload['attachment1.txt']).should eq 'attachment1.txt'
      File.basename(payload['attachment2.txt']).should eq 'attachment2.txt'
   end

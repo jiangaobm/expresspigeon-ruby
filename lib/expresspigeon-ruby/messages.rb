@@ -115,7 +115,7 @@ module ExpressPigeon
       payload[:reply_to] = reply_to
       payload[:subject] = subject
       payload[:from] = from
-      payload[:merge_fields] = merge_fields
+      payload[:merge_fields] = merge_fields.to_json
       payload[:view_online] = view_online
       payload[:click_tracking] = click_tracking
       payload[:suppress_address] = suppress_address
