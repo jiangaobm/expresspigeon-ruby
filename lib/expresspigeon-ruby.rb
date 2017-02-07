@@ -58,11 +58,16 @@ module ExpressPigeon
         resp = Net::HTTP.start(uri.host, uri.port, :use_ssl => USE_SSL) do |http|
           http.request req
         end
-        parsed = JSON.parse(resp.body)
-        if parsed.kind_of? Hash
-          MetaResponse.new parsed
+
+        if resp.content_type == 'application/json'
+          parsed = JSON.parse(resp.body)
+          if parsed.kind_of? Hash
+            MetaResponse.new parsed
+          else
+            parsed
+          end
         else
-          parsed
+          resp.body
         end
       end
     end

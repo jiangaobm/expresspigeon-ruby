@@ -32,10 +32,10 @@ describe 'transactional messages integration test' do
 
   #TODO: complete the spec
   it 'sends a single transactional message' do
-    message_response = PIGEON.messages.send_message 115, ENV['TARGET_EMAIL'], ENV['TARGET_EMAIL'], "Team ExpressPigeon", "Hi there!",
-                                                    :first_name => "Igor"
+    message_response = ExpressPigeon::API.messages.send_message 115, ENV['TARGET_EMAIL'], ENV['TARGET_EMAIL'], "Team ExpressPigeon", "Hi there!",
+                                                              :first_name => "Igor"
     validate_response message_response, 200, 'success', /email queued/
-    report = PIGEON.messages.report(message_response.id)
+    report = ExpressPigeon::API.messages.report(message_response.id)
     report.id.should eq message_response.id
   end
 
@@ -94,19 +94,19 @@ describe 'transactional messages integration test' do
 
     start = Time.now.utc - 60 # one minute ago
 
-    message_response = PIGEON.messages.send_message 4905, ENV['TARGET_EMAIL'], ENV['TARGET_EMAIL'],
-                                                    'Team EP', "Hi, there!", :first_name => "Bob"
+    message_response = ExpressPigeon::API.messages.send_message 4905, ENV['TARGET_EMAIL'], ENV['TARGET_EMAIL'],
+                                                              'Team EP', "Hi, there!", :first_name => "Bob"
 
     validate_response message_response, 200, 'success', /email queued/
     message_response.id should_not be_nil
 
-    message_response2 = PIGEON.messages.send_message 4905, ENV['TARGET_EMAIL'], ENV['TARGET_EMAIL'],
-                                                     'Team EP', "Hi, there!", :first_name => "Bob"
+    message_response2 = ExpressPigeon::API.messages.send_message 4905, ENV['TARGET_EMAIL'], ENV['TARGET_EMAIL'],
+                                                               'Team EP', "Hi, there!", :first_name => "Bob"
     validate_response message_response2, 200, 'success', /email queued/
     message_response2.id should_not be_nil
 
     finish = start + 120 # two minutes after start
-    reports = PIGEON.messages.reports (message_response.id - 1), start, finish
+    reports = ExpressPigeon::API.messages.reports (message_response.id - 1), start, finish
 
     reports.size.should eq 2
     reports[0]['id'].should eq message_response.id
@@ -126,14 +126,14 @@ describe 'transactional messages integration test' do
 
   it 'should from payload hash' do
 
-     payload = PIGEON.messages.prepare_payload(123,           #template_id
-                                               'john@doe.com',
-                                               'jane@doe.com',
-                                               'Jane Doe',
-                                               'Hello, Dolly!',
-                                               {eye_color: 'blue', body_shape:'pear'},
-                                               false, true, false,
-                                               %w(spec/resources/attachment1.txt spec/resources/attachment2.txt))
+     payload = ExpressPigeon::API.messages.prepare_payload(123, #template_id
+                                                         'john@doe.com',
+                                                         'jane@doe.com',
+                                                         'Jane Doe',
+                                                         'Hello, Dolly!',
+                                                         {eye_color: 'blue', body_shape:'pear'},
+                                                         false, true, false,
+                                                         %w(spec/resources/attachment1.txt spec/resources/attachment2.txt))
 
      payload[:multipart].should eq true
      payload[:template_id].should eq 123

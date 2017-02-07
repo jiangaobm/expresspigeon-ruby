@@ -33,6 +33,13 @@ module ExpressPigeon
     end
 
 
+    #
+    #:returns: status of upload
+    #
+    def upload_status(list_id)
+      get "#{@endpoint}/upload_status/#{list_id}"
+    end
+
     ##
     # Removes a list with a given id. A list must be enabled and has no dependent subscriptions and/or scheduled campaigns.
     #

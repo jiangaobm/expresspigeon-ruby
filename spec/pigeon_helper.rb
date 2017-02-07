@@ -1,5 +1,3 @@
-PIGEON = ExpressPigeon::API
-
 
 TEMPLATE_ID = ENV['TEMPLATE_ID']
 LIST_ID = ENV['LIST_ID']
