@@ -108,7 +108,7 @@ module ExpressPigeon
       Messages.new
     end
 
-    def self.auto_responders
+    def self.autoresponders
       AutoResponders.new
     end
 

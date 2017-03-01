@@ -129,5 +129,27 @@ describe 'campaigns integration test' do
     campaigns.size.should eq 3
   end
 
+
+  it 'should get opened from campaign' do
+    opened = ExpressPigeon::API.campaigns.opened 441663
+
+    puts opened
+
+  end
+
+  it 'should get clicked from campaign' do
+    clicked = ExpressPigeon::API.campaigns.clicked 441663
+
+    puts clicked
+
+  end
+
+  it 'should get unsubs from campaign' do
+    unsubscribed = ExpressPigeon::API.campaigns.unsubscribed 441663
+
+    puts unsubscribed
+
+  end
+
 end
 

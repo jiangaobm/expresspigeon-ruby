@@ -14,6 +14,14 @@ module ExpressPigeon
       get "#{@endpoint}/#{campaign_id}"
     end
 
+    def opened(campaign_id)
+      get "#{@endpoint}/#{campaign_id}/opened"
+    end
+
+    def clicked(campaign_id)
+      get "#{@endpoint}/#{campaign_id}/clicked"
+    end
+
     def bounced(campaign_id)
       get "#{@endpoint}/#{campaign_id}/bounced"
     end
