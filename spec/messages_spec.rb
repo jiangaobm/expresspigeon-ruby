@@ -90,7 +90,7 @@ describe 'transactional messages integration test' do
   #    self.assertEquals(report2.email, os.environ['EXPRESSPIGEON_API_USER'])
   #    self.assertTrue(report2.in_transit is not None)
   #
-  it 'test_sending_multiple_messages_and_get_reports_for_today(self):' do
+  it 'should send multiple messages and get reports for today' do
 
     start = Time.now.utc - 60 # one minute ago
 
@@ -115,6 +115,8 @@ describe 'transactional messages integration test' do
     reports[0]['email'].should eq ENV['TARGET_EMAIL']
     reports[1]['email'].should eq ENV['TARGET_EMAIL']
   end
+
+
   #
   #def __get_report_by_id__(self, message_id, start_date=None, end_date=None):
   #    reports = self.api.messages.reports() if start_date is None and end_date is None else \
@@ -124,7 +126,7 @@ describe 'transactional messages integration test' do
   #    return report[0]
 
 
-  it 'should from payload hash' do
+  it 'should prepare payload hash' do
 
      payload = ExpressPigeon::API.messages.prepare_payload(123, #template_id
                                                          'john@doe.com',
@@ -133,7 +135,7 @@ describe 'transactional messages integration test' do
                                                          'Hello, Dolly!',
                                                          {eye_color: 'blue', body_shape:'pear'},
                                                          false, true, false,
-                                                         %w(spec/resources/attachment1.txt spec/resources/attachment2.txt))
+                                                         %w(spec/resources/attachment1.txt spec/resources/attachment2.txt), {})
 
      payload[:multipart].should eq true
      payload[:template_id].should eq 123
