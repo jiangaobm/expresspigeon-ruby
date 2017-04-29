@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    expresspigeon-ruby (0.0.8)
+    expresspigeon-ruby (0.0.9)
       rest-client (~> 1.8)
 
 GEM

@@ -13,6 +13,7 @@ puts MESSAGES.send_message(
     {first_name: 'Igor', eye_color: 'brown'},    #merge_fields
     false,                                      #view_online
     true,                                       #click_tracking
-    true                                       #suppress_address
-    
+    true,                                       #suppress_address
+    {},                                         #file paths to upload as attachments
+    {Sender: 'Vasya Pupkin <vasya@polevoy.org>'}
 )
