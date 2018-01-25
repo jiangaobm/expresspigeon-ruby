@@ -1,6 +1,6 @@
 # Expresspigeon::Ruby
 
-This is a Ruby library for convenince access to [ExpressPigeon API](https://expresspigeon.com/api).
+This is a Ruby library for convenient access to [ExpressPigeon API](https://expresspigeon.com/api).
 
 ## Installation
 
