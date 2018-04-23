@@ -7,6 +7,7 @@ require 'rest_client'
 
 module ExpressPigeon
 
+  READ_TIMEOUT = ENV['EXPRESSPIGEON_READ_TIMEOUT'] || 180 # seconds
   AUTH_KEY = ENV['EXPRESSPIGEON_AUTH_KEY']
   ROOT = 'https://api.expresspigeon.com/'
   USE_SSL = true
@@ -45,7 +46,7 @@ module ExpressPigeon
       end
 
       if block_given?
-        Net::HTTP.start(uri.host, uri.port, :use_ssl => USE_SSL) do |http|
+        Net::HTTP.start(uri.host, uri.port, :use_ssl => USE_SSL, :read_timeout => READ_TIMEOUT) do |http|
           http.request req do |res|
             res.read_body do |seg|
               yield seg
@@ -53,7 +54,7 @@ module ExpressPigeon
           end
         end
       else
-        resp = Net::HTTP.start(uri.host, uri.port, :use_ssl => USE_SSL) do |http|
+        resp = Net::HTTP.start(uri.host, uri.port, :use_ssl => USE_SSL, :read_timeout => READ_TIMEOUT) do |http|
           http.request req
         end
         parsed = JSON.parse(resp.body)
