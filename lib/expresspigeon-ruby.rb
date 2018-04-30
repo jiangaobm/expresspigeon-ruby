@@ -21,6 +21,14 @@ module ExpressPigeon
       self
     end
 
+    def open_timeout=(timeout)
+      @open_timeout = timeout
+    end
+
+    def read_timeout=(timeout)
+      @read_timeout = timeout
+    end
+
     def root(root)
       @root = root
       self
@@ -47,7 +55,13 @@ module ExpressPigeon
       end
 
       if block_given?
-        Net::HTTP.start(uri.host, uri.port, :use_ssl => USE_SSL) do |http|
+        Net::HTTP.start(
+          uri.host,
+          uri.port,
+          :use_ssl => USE_SSL,
+          :read_timeout => @read_timeout,
+          :open_timeout => @open_timeout,
+        ) do |http|
           http.request req do |res|
             res.read_body do |seg|
               yield seg
@@ -55,7 +69,13 @@ module ExpressPigeon
           end
         end
       else
-        resp = Net::HTTP.start(uri.host, uri.port, :use_ssl => USE_SSL) do |http|
+        resp = Net::HTTP.start(
+          uri.host,
+          uri.port,
+          :use_ssl => USE_SSL,
+          :read_timeout => @read_timeout,
+          :open_timeout => @open_timeout,
+        ) do |http|
           http.request req
         end
 
