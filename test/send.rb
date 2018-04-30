@@ -6,12 +6,12 @@ MESSAGES = ExpressPigeon::API.messages.auth_key(ENV['AUTH_KEY'])
 
 puts MESSAGES.send_message(
     390243,                                     # template_id
-    'igor@polevoy.org',                         #to
-    'igor@polevoy.org',                         #reply_to
+    'igor@expressxxxx.com',                         #to
+    'igor@polevoyxxx.org',                         #reply_to
     "Igor Polevoy",                             #from_name
-    "Hi there! Sending with a heades",          #subject
-    {first_name: 'Igor', eye_color: 'brown'},    #merge_fields
-    false,                                      #view_online
+    "Hi there! A simple send 345!",             #subject
+    {first_name: 'Igor', eye_color: 'brown'},   #merge_fields
+    true,                                       #view_online
     true,                                       #click_tracking
     true                                       #suppress_address
     
