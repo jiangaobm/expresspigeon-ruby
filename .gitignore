@@ -8,6 +8,6 @@ set_env
 
 *.txt
 
-test/send.sh
+test/*
 
 expresspigeon-ruby-*.gem
