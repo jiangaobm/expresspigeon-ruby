@@ -1,8 +1,0 @@
-USER_RVMRC='.rvmrc.local'
-
-if [ -f $USER_RVMRC ]; then
-  source $USER_RVMRC
-else
-  rvm use 2.1.1 --create
-fi
-

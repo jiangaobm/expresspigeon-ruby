@@ -3,7 +3,8 @@
 .idea/
 
 
-rspec.sh
+scripts/*
+
 set_env
 
 *.txt

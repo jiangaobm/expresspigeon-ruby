@@ -6,25 +6,25 @@ describe 'transactional messages integration test' do
   include PigeonSpecHelper
 
   #def test_sending_message_and_report_without_params(self):
-  #    res = self.api.messages.send_message(template_id=-1, to="", reply_to="", from_name="", subject="")
+  #    res = self.api.messages.send_message(template_id=-1, to="", reply_to="", from="", subject="")
   #    self.assertEqual(res.code, 400)
   #    self.assertEqual(res.status, "error")
   #    self.assertEqual(res.message, "Required fields: template_id, reply_to, from, to, and subject")
   #
   #def test_sending_message_and_report_with_wrong_email_in_to(self):
-  #    res = self.api.messages.send_message(template_id=-1, to="e", reply_to="a@a.a", from_name="me", subject="Hi")
+  #    res = self.api.messages.send_message(template_id=-1, to="e", reply_to="a@a.a", from="me", subject="Hi")
   #    self.assertEqual(res.code, 400)
   #    self.assertEqual(res.status, "error")
   #    self.assertEqual(res.message, "Email in the 'to' field is not valid")
   #
   #def test_sending_message_and_report_with_wrong_email_in_reply_to(self):
-  #    res = self.api.messages.send_message(template_id=-1, to="e@e.e", reply_to="a", from_name="me", subject="Hi")
+  #    res = self.api.messages.send_message(template_id=-1, to="e@e.e", reply_to="a", from="me", subject="Hi")
   #    self.assertEqual(res.code, 400)
   #    self.assertEqual(res.status, "error")
   #    self.assertEqual(res.message, "Email in the 'reply_to' field is not valid")
   #
   #def test_sending_message_and_report_with_wrong_template_id(self):
-  #    res = self.api.messages.send_message(template_id=-1, to="e@e.e", reply_to="a@a.a", from_name="me", subject="Hi")
+  #    res = self.api.messages.send_message(template_id=-1, to="e@e.e", reply_to="a@a.a", from="me", subject="Hi")
   #    self.assertEqual(res.code, 400)
   #    self.assertEqual(res.status, "error")
   #    self.assertEqual(res.message, "template=-1 not found")
@@ -62,7 +62,7 @@ describe 'transactional messages integration test' do
   #def test_sending_multiple_messages_and_get_reports(self):
   #    message_response = self.api.messages.send_message(template_id=self.template_id,
   #                                                      to=os.environ['EXPRESSPIGEON_API_USER'],
-  #                                                      reply_to="a@a.a", from_name="me", subject="Hi",
+  #                                                      reply_to="a@a.a", from="me", subject="Hi",
   #                                                      merge_fields={"first_name": "Gleb"})
   #    self.assertEqual(message_response.code, 200)
   #    self.assertEqual(message_response.status, "success")
@@ -71,7 +71,7 @@ describe 'transactional messages integration test' do
   #
   #    message_response_2 = self.api.messages.send_message(template_id=self.template_id,
   #                                                        to=os.environ['EXPRESSPIGEON_API_USER'],
-  #                                                        reply_to="a@a.a", from_name="me", subject="Hi 2",
+  #                                                        reply_to="a@a.a", from="me", subject="Hi 2",
   #                                                        merge_fields={"first_name": "Gleb"})
   #    self.assertEqual(message_response_2.code, 200)
   #    self.assertEqual(message_response_2.status, "success")
@@ -135,7 +135,7 @@ describe 'transactional messages integration test' do
                                                          'Hello, Dolly!',
                                                          {eye_color: 'blue', body_shape:'pear'},
                                                          false, true, false,
-                                                         %w(spec/resources/attachment1.txt spec/resources/attachment2.txt), {})
+                                                         %w(spec/resources/attachment1.txt spec/resources/attachment2.txt), {}, nil, nil)
 
      payload[:multipart].should eq true
      payload[:template_id].should eq 123

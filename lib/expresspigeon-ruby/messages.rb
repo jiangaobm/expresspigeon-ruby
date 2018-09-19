@@ -7,31 +7,45 @@ module ExpressPigeon
       @endpoint = 'messages'
     end
 
-    # Sends a transactional message using ExpressPigeon Rest API
+    # Sends a single transactional message.
     #
-    # * +template_id+ - ID of a template to use for sending
-    # * +to+ - destination email address
-    # * +reply_to+ - return email address
-    # * +from_name+ - name of sender
-    # * +subject+ - subject of email
-    # * +merge fields+ - hash with dynamic values to merge into a template
-    # * +view_online+ - generate "view online" link in the template
-    # * +click_tracking+ - enable/disable click tracking (and URL rewriting)
-    # * +suppress_address+ - enable/disable display of physical address at the bottom of newsletter.
-    # * +attachments+ - array of file paths  to attach to email. Size limit: 1k per attachment, maximum 3 attachments.
-    # * +headers+ - hash with headers to include into the message. The header 'Sender' will override a standard behavior of the platform.
-    def send_message(template_id, to, reply_to, from_name, subject, merge_fields = nil, view_online = false,
+    # For more information on arguments, see: [https://expresspigeon.com/kb/transactional-send].
+    #
+    def send_message(template_id, to, reply_to, from, subject, merge_fields = nil, view_online = false,
                                             click_tracking = true, suppress_address = false, attachments = nil, headers = nil)
       if attachments
-          upload(template_id, to, reply_to, from_name, subject, merge_fields, view_online, click_tracking,
-                                                                                    suppress_address, attachments, headers)
+          upload(template_id, to, reply_to, from, subject, merge_fields, view_online, click_tracking,
+                                                                                    suppress_address, attachments, headers, nil, nil)
         else
-          post @endpoint, params = {template_id: template_id, to: to, reply_to: reply_to, from: from_name,
+          post @endpoint, params = {template_id: template_id, to: to, reply_to: reply_to, from: from,
                                     subject: subject, merge_fields: merge_fields, view_online: view_online,
                                     click_tracking: click_tracking, suppress_address: suppress_address, headers: headers}
       end
     end
 
+
+    # Sends a single transactional message.
+    #
+    # For more information on arguments, see: [https://expresspigeon.com/kb/transactional-send].
+
+    # This method allows to specify different 'reply_to', 'reply_name', 'from' and 'from_address' values.
+    #
+    def send_msg(template_id, to, reply_to, from, subject, optional = {})
+
+      if optional[:attachments]
+        upload(template_id, to, reply_to, from, subject, optional[:merge_fields], optional[:view_online], optional[:click_tracking],
+               optional[:suppress_address], optional[:attachments], optional[:headers], optional[:reply_name], optional[:from_address])
+      else
+        params =  optional ? optional.clone : {}
+        params[:template_id] =  template_id
+        params[:to] =  to
+        params[:reply_to] =  reply_to
+        params[:from] =  from
+        params[:subject] =  subject
+
+        post @endpoint, params
+      end
+    end
 
     # Retrieve report for a single message.
     #
@@ -74,22 +88,26 @@ module ExpressPigeon
 
 
     # Sends a transactional message with attachments using ExpressPigeon Rest API.
-    # This method  is not used directly, instead use +send_message()+
+    # This method  is not used directly, instead use +send_message()+ or +send_msg()+
     #
     # * +template_id+ - ID of a template to use for sending
     # * +to+ - destination email address
     # * +reply_to+ - return email address
-    # * +from_name+ - name of sender
+    # * +from+ - name of sender
     # * +subject+ - subject of email
     # * +merge fields+ - hash with dynamic values to merge into a template
     # * +view_online+ - generate "view online" link in the template
     # * +click_tracking+ - enable/disable click tracking (and URL rewriting)
     # * +suppress_address+ - enable/disable display of physical address at the bottom of newsletter.
-    # * +attachments+ - array of file paths  to attach to email. Size limit: 1k per attachment, maximum 3 attachments.
-    def upload(template_id, to, reply_to, from_name, subject, merge_fields, view_online, click_tracking, suppress_address, attachments, headers)
+    # * +attachments+ - array of file paths  to attach to email.
+    # * +headers+ - hash of headers to add to SMTP message
+    # * +reply_name+ - reply name to use in the +reply-to+ header.
+    # * +from_name+ - name to use in the +from+ header
+    #
+    def upload(template_id, to, reply_to, from, subject, merge_fields, view_online, click_tracking, suppress_address, attachments, headers, reply_name, from_address)
       path = "#{@root ? @root : ROOT}/#{@endpoint}"
       begin
-        payload = prepare_payload(template_id, to, reply_to, from_name, subject, merge_fields, view_online, click_tracking, suppress_address, attachments, headers)
+        payload = prepare_payload(template_id, to, reply_to, from, subject, merge_fields, view_online, click_tracking, suppress_address, attachments, headers, reply_name, from_address)
         request = RestClient::Request.new(
             :method => :post,
             :headers => {:'X-auth-key' => get_auth_key},
@@ -110,7 +128,8 @@ module ExpressPigeon
     end
 
 
-    def prepare_payload(template_id, to, reply_to, from, subject, merge_fields, view_online, click_tracking, suppress_address, attachments, headers)
+    def prepare_payload(template_id, to, reply_to, from, subject, merge_fields, view_online, click_tracking, suppress_address, attachments, headers,
+                        reply_name, from_address)
       payload = { multipart: true }
       payload[:template_id] = template_id
       payload[:to] = to
@@ -122,6 +141,8 @@ module ExpressPigeon
       payload[:view_online] = view_online
       payload[:click_tracking] = click_tracking
       payload[:suppress_address] = suppress_address
+      payload[:reply_name] = reply_name
+      payload[:from_address] = from_address
 
       attachments.each { |attachment|
         if File.file?(attachment)

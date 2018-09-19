@@ -15,7 +15,7 @@ module ExpressPigeon
       @delegate[m.to_s]
     end
 
-    def respond_to?(m)
+    def respond_to?(m,  include_all = false)
       @delegate.key?(m.to_s)
     end
 
