@@ -20,7 +20,6 @@ Or install it yourself as:
 
 Sending a transactional message is easy: 
 
-
 ```ruby
 MESSAGES = ExpressPigeon::API.messages.auth_key 'XXX'
 message_response = MESSAGES.send_message 115,                 # template ID
@@ -51,7 +50,7 @@ puts MESSAGES.report message_response.id
      123,                                        # template_id
      'john@doe.com',                             #to
      'jane@doe.com',                             #reply_to
-     "Jane Doe",                                 #from_name
+     "Jane Doe",                                 #from
      "Want to get out for a dinner?",            #subject
      {first_name: 'John', main_course: 'stake'}, #merge_fields
      false,                                      #view_online
@@ -61,6 +60,29 @@ puts MESSAGES.report message_response.id
  )
 
 ```
+
+## Sending a message with all required and optional arguments
+
+```ruby
+
+MESSAGES = ExpressPigeon::API.messages.auth_key(ENV['AUTH_KEY'])
+
+attachments = %W{attachments/attachment1.txt attachments/calendar.ics}
+
+puts MESSAGES.send_msg 123, 'john@doe.com', 'jane@doe.com',
+                       'Jane Doe', 'A simple test subject',
+                       merge_fields: { first_name: "John" },
+                       view_online: false,
+                       click_tracking: true,
+                       suppress_address: false,
+                       attachments: attachments,
+                       headers: { Xtest: "test" },
+                       reply_name: "Jane S. Doe",
+                       from_address: "jane+123@doe.com" 
+
+```
+
+The first five arguments are mandatory, while the rest are optional. 
 
 ## Contributing
 
